@@ -42,7 +42,7 @@
     h1 { margin: 0; font-size: clamp(1.7rem, 5vw, 2.25rem); line-height: 1.15; }
     .intro { margin: 16px 0 24px; color: #50665e; line-height: 1.6; }
     .details {
-      margin: 0 0 28px;
+      margin: 0 0 24px;
       padding: 16px 20px;
       text-align: left;
       background: #f3f8f5;
@@ -58,16 +58,21 @@
       width: 100%;
       min-height: 52px;
       padding: 14px 22px;
+      border: 0;
       border-radius: 10px;
       background: #176b55;
       color: #fff;
+      font: inherit;
       font-weight: 700;
       text-decoration: none;
       transition: background .15s ease, transform .15s ease;
     }
     .button:hover { background: #115641; transform: translateY(-1px); }
     .button:focus-visible { outline: 3px solid #84c9ad; outline-offset: 3px; }
-    .note { margin: 16px 0 0; color: #64776f; font-size: .88rem; line-height: 1.5; }
+    .whatsapp { margin-top: 10px; background: #16834b; }
+    .whatsapp:hover { background: #116b3d; }
+    .section-title { margin: 24px 0 4px; font-size: 1rem; }
+    .note { margin: 14px 0 0; color: #64776f; font-size: .88rem; line-height: 1.5; }
   </style>
 </head>
 <body>
@@ -75,16 +80,38 @@
     <img class="logo" src="logo.png" alt="Moravia Salud Animal">
     <p class="eyebrow">Moravia Salud Animal</p>
     <h1>Inspección de uso de EPP</h1>
-    <p class="intro">Abre el formulario de Microsoft Forms con la información de inspección ya preparada.</p>
-    <section class="details" aria-label="Datos precargados">
+    <p class="intro">Revisa la información y abre el formulario con las respuestas precargadas.</p>
+
+    <section class="details" aria-label="Datos de inspección">
       <div><strong>Fecha:</strong> 11 de noviembre de 2026</div>
       <div><strong>Inspector/a:</strong> Pricila Sanchez</div>
-      <div><strong>Colaborador/a:</strong> Melvin Ramos</div>
-      <div><strong>Sede:</strong> Almacen 71</div>
+      <div><strong>Colaborador/a:</strong> David Espinoza</div>
+      <div><strong>Sede:</strong> Almacen 71 A</div>
       <div><strong>Elementos:</strong> Chaleco, Burros</div>
     </section>
-    <a class="button" href="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=MfwDqrehqUSxkn9U_QGXE1crhgE707RDrXIihMHUMhFUQVBHR1I4OUFMWDNUQUlITlM5VFE3VksxMC4u&amp;r27293fe88f3a4e2cb354ea07f168938a=%222026-11-11%22&amp;r1d54e9117de64235a8f0a0099e9d43b0=Pricila%20Sanchez&amp;ra8a89d7161fd4ab886c49806c1c168b9=Melvin%20Ramos&amp;r6260811b238449c0bee4aa5970637f32=Almacen%2071&amp;rf9e1966fe2e4471b86b8b381fcda2dde=%22No%22&amp;re1f4d76995a14056af137330ca42da32=%22%5B%5C%22Chaleco%5C%22%2C%5C%22Burros%5C%22%5D%22&amp;rde0dbff6d33e4551b5cbb3e590361f7e=Uso%20adecuado%20de%20%20EPP" target="_blank" rel="noopener noreferrer">Abrir formulario de inspección</a>
-    <p class="note">Revisa las respuestas precargadas en Microsoft Forms y envía el formulario desde allí.</p>
+
+    <a class="button" href="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=MfwDqrehqUSxkn9U_QGXE1crhgE707RDrXIihMHUMhFUQVBHR1I4OUFMWDNUQUlITlM5VFE3VksxMC4u&amp;r27293fe88f3a4e2cb354ea07f168938a=%222026-11-11%22&amp;r1d54e9117de64235a8f0a0099e9d43b0=Pricila%20Sanchez&amp;ra8a89d7161fd4ab886c49806c1c168b9=David%20Espinoza&amp;r6260811b238449c0bee4aa5970637f32=Almacen%2071%20A&amp;rf9e1966fe2e4471b86b8b381fcda2dde=%22No%22&amp;re1f4d76995a14056af137330ca42da32=%22%5B%5C%22Chaleco%5C%22%2C%5C%22Burros%5C%22%5D%22&amp;rde0dbff6d33e4551b5cbb3e590361f7e=Ningna" target="_blank" rel="noopener noreferrer">Abrir formulario de inspección</a>
+
+    <h2 class="section-title">Enviar reporte por WhatsApp</h2>
+    <a class="button whatsapp" id="whatsapp-1" href="https://wa.me/50435432201" target="_blank" rel="noopener noreferrer">Enviar al 504 3543-2201</a>
+    <a class="button whatsapp" id="whatsapp-2" href="https://wa.me/504986200005" target="_blank" rel="noopener noreferrer">Enviar al 504 9862-00005</a>
+    <p class="note">El formulario se abre con la información precargada; revísala y envíala desde Microsoft Forms. WhatsApp abrirá un mensaje listo para enviar: confirma el envío en la aplicación.</p>
   </main>
+  <script>
+    const formUrl = document.querySelector('.button[href^="https://forms.cloud.microsoft/"]').href;
+    const report = [
+      'Reporte de inspección de uso de EPP',
+      'Fecha: 11 de noviembre de 2026',
+      'Inspector/a: Pricila Sanchez',
+      'Colaborador/a: David Espinoza',
+      'Sede: Almacen 71 A',
+      'Elementos: Chaleco, Burros',
+      'Formulario para revisar y enviar: ' + formUrl
+    ].join('\n');
+
+    document.querySelectorAll('.whatsapp').forEach((link) => {
+      link.href += '?text=' + encodeURIComponent(report);
+    });
+  </script>
 </body>
 </html>
