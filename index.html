@@ -113,13 +113,15 @@
         </select>
       </label>
       <fieldset>
-        <legend>Elementos de EPP inspeccionados</legend>
+        <legend>¿Se encontraba realizando trabajo en altura?</legend>
         <div class="choices">
-          <label class="choice"><input type="checkbox" name="equipment" value="Chaleco" checked> Chaleco</label>
-          <label class="choice"><input type="checkbox" name="equipment" value="Burros" checked> Burros</label>
-          <label class="choice"><input type="checkbox" name="equipment" value="Casco"> Casco</label>
-          <label class="choice"><input type="checkbox" name="equipment" value="Guantes"> Guantes</label>
+          <label class="choice"><input type="radio" name="height-work" value="Sí"> Sí</label>
+          <label class="choice"><input type="radio" name="height-work" value="No" checked> No</label>
         </div>
+      </fieldset>
+      <fieldset>
+        <legend>Uso de EPP</legend>
+        <div class="choices" id="equipment-choices"></div>
       </fieldset>
       <label class="field" for="result">Resultado de inspección
         <select id="result" name="result">
@@ -127,7 +129,7 @@
           <option value="Requiere corrección">Requiere corrección</option>
         </select>
       </label>
-      <a class="button" id="form-link" href="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=MfwDqrehqUSxkn9U_QGXE1crhgE707RDrXIihMHUMhFUQVBHR1I4OUFMWDNUQUlITlM5VFE3VksxMC4u" target="_blank" rel="noopener noreferrer">Abrir formulario de Microsoft Forms</a>
+      <a class="button" id="form-link" href="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=MfwDqrehqUSxkn9U_QGXE1crhgE707RDrXIihMHUMhFUQVBHR1I4OUFMWDNUQUlITlM5VFE3VksxMC4u" target="_blank" rel="noopener noreferrer">Abrir formulario de Microsoft</a>
     </form>
 
     <h2 class="section-title">Enviar reporte por WhatsApp</h2>
@@ -138,6 +140,7 @@
   <script>
     const form = document.querySelector('#inspection-form');
     const formLink = document.querySelector('#form-link');
+    const equipmentChoices = document.querySelector('#equipment-choices');
     const dateInput = document.querySelector('#inspection-date');
     const inspectorInput = document.querySelector('#inspector');
     const employeeInput = document.querySelector('#employee');
@@ -145,9 +148,33 @@
     const issueInput = document.querySelector('#issue');
     const resultInput = document.querySelector('#result');
     const formBase = 'https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=MfwDqrehqUSxkn9U_QGXE1crhgE707RDrXIihMHUMhFUQVBHR1I4OUFMWDNUQUlITlM5VFE3VksxMC4u';
+    const equipmentByHeightWork = {
+      Sí: ['Burros', 'Chaleco', 'Casco', 'Faja Lumbar', 'Arnes'],
+      No: ['Chaleco', 'Burros', 'Faja Lumbar']
+    };
+
+    function renderEquipment() {
+      const heightWork = form.querySelector('input[name="height-work"]:checked').value;
+      const previouslyChecked = new Set(
+        [...equipmentChoices.querySelectorAll('input[name="equipment"]:checked')].map((input) => input.value)
+      );
+      equipmentChoices.replaceChildren();
+      equipmentByHeightWork[heightWork].forEach((item) => {
+        const label = document.createElement('label');
+        label.className = 'choice';
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.name = 'equipment';
+        checkbox.value = item;
+        checkbox.checked = previouslyChecked.has(item) || (heightWork === 'No' && ['Chaleco', 'Burros'].includes(item));
+        label.append(checkbox, document.createTextNode(' ' + item));
+        equipmentChoices.append(label);
+      });
+    }
 
     function updateLinks() {
       const equipment = [...form.querySelectorAll('input[name="equipment"]:checked')].map((input) => input.value);
+      const heightWork = form.querySelector('input[name="height-work"]:checked').value;
       const formUrl = new URL(formBase);
       const answers = {
         r27293fe88f3a4e2cb354ea07f168938a: JSON.stringify(dateInput.value),
@@ -171,7 +198,8 @@
         'Colaborador/a: ' + (employeeInput.value || 'No indicado'),
         'Sede: ' + (siteInput.value || 'No indicada'),
         '¿Se detectó incumplimiento?: ' + issueInput.value,
-        'Elementos: ' + (equipment.length ? equipment.join(', ') : 'Ninguno seleccionado'),
+        '¿Realizaba trabajo en altura?: ' + heightWork,
+        'Elementos de EPP: ' + (equipment.length ? equipment.join(', ') : 'Ninguno seleccionado'),
         'Resultado: ' + resultInput.value,
         'Formulario para revisar y enviar: ' + formUrl.toString()
       ].join('\n');
@@ -181,8 +209,12 @@
       });
     }
 
+    form.addEventListener('change', (event) => {
+      if (event.target.name === 'height-work') renderEquipment();
+      updateLinks();
+    });
     form.addEventListener('input', updateLinks);
-    form.addEventListener('change', updateLinks);
+    renderEquipment();
     updateLinks();
   </script>
 </body>
