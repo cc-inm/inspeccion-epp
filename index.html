@@ -41,16 +41,25 @@
     }
     h1 { margin: 0; font-size: clamp(1.7rem, 5vw, 2.25rem); line-height: 1.15; }
     .intro { margin: 16px 0 24px; color: #50665e; line-height: 1.6; }
-    .details {
-      margin: 0 0 24px;
-      padding: 16px 20px;
-      text-align: left;
-      background: #f3f8f5;
-      border-radius: 12px;
-      color: #36534a;
-      line-height: 1.8;
+    .inspection-form { display: grid; gap: 16px; text-align: left; }
+    .field { display: grid; gap: 6px; color: #36534a; font-weight: 650; }
+    .field input, .field select {
+      width: 100%;
+      min-height: 46px;
+      padding: 10px 12px;
+      border: 1px solid #bdcec5;
+      border-radius: 8px;
+      background: #fff;
+      color: #18332c;
+      font: inherit;
+      font-weight: 400;
     }
-    .details strong { color: #18332c; }
+    .field input:focus, .field select:focus { outline: 3px solid #b2dfcc; border-color: #176b55; }
+    fieldset { margin: 0; padding: 12px 14px; border: 1px solid #bdcec5; border-radius: 8px; }
+    legend { padding: 0 6px; color: #36534a; font-weight: 650; }
+    .choices { display: flex; flex-wrap: wrap; gap: 12px 20px; }
+    .choice { display: inline-flex; align-items: center; gap: 8px; color: #36534a; }
+    .choice input { width: 18px; height: 18px; accent-color: #176b55; }
     .button {
       display: inline-flex;
       justify-content: center;
@@ -65,6 +74,8 @@
       font: inherit;
       font-weight: 700;
       text-decoration: none;
+      text-align: center;
+      cursor: pointer;
       transition: background .15s ease, transform .15s ease;
     }
     .button:hover { background: #115641; transform: translateY(-1px); }
@@ -80,38 +91,99 @@
     <img class="logo" src="logo.png" alt="Moravia Salud Animal">
     <p class="eyebrow">Moravia Salud Animal</p>
     <h1>Inspección de uso de EPP</h1>
-    <p class="intro">Revisa la información y abre el formulario con las respuestas precargadas.</p>
+    <p class="intro">Completa o ajusta los datos. Se usarán para preparar el formulario de Microsoft y el reporte de WhatsApp.</p>
 
-    <section class="details" aria-label="Datos de inspección">
-      <div><strong>Fecha:</strong> 11 de noviembre de 2026</div>
-      <div><strong>Inspector/a:</strong> Pricila Sanchez</div>
-      <div><strong>Colaborador/a:</strong> David Espinoza</div>
-      <div><strong>Sede:</strong> Almacen 71 A</div>
-      <div><strong>Elementos:</strong> Chaleco, Burros</div>
-    </section>
-
-    <a class="button" href="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=MfwDqrehqUSxkn9U_QGXE1crhgE707RDrXIihMHUMhFUQVBHR1I4OUFMWDNUQUlITlM5VFE3VksxMC4u&amp;r27293fe88f3a4e2cb354ea07f168938a=%222026-11-11%22&amp;r1d54e9117de64235a8f0a0099e9d43b0=Pricila%20Sanchez&amp;ra8a89d7161fd4ab886c49806c1c168b9=David%20Espinoza&amp;r6260811b238449c0bee4aa5970637f32=Almacen%2071%20A&amp;rf9e1966fe2e4471b86b8b381fcda2dde=%22No%22&amp;re1f4d76995a14056af137330ca42da32=%22%5B%5C%22Chaleco%5C%22%2C%5C%22Burros%5C%22%5D%22&amp;rde0dbff6d33e4551b5cbb3e590361f7e=EPP%20Adecuado" target="_blank" rel="noopener noreferrer">Abrir formulario de inspección</a>
+    <form class="inspection-form" id="inspection-form">
+      <label class="field" for="inspection-date">Fecha
+        <input id="inspection-date" name="date" type="date" value="2026-11-11" required>
+      </label>
+      <label class="field" for="inspector">Inspector/a
+        <input id="inspector" name="inspector" type="text" value="Pricila Sanchez" required>
+      </label>
+      <label class="field" for="employee">Colaborador/a
+        <input id="employee" name="employee" type="text" value="David Espinoza" required>
+      </label>
+      <label class="field" for="site">Sede
+        <input id="site" name="site" type="text" value="Almacen 71 A" required>
+      </label>
+      <label class="field" for="issue">¿Se detectó incumplimiento?
+        <select id="issue" name="issue">
+          <option value="No" selected>No</option>
+          <option value="Sí">Sí</option>
+        </select>
+      </label>
+      <fieldset>
+        <legend>Elementos de EPP inspeccionados</legend>
+        <div class="choices">
+          <label class="choice"><input type="checkbox" name="equipment" value="Chaleco" checked> Chaleco</label>
+          <label class="choice"><input type="checkbox" name="equipment" value="Burros" checked> Burros</label>
+          <label class="choice"><input type="checkbox" name="equipment" value="Casco"> Casco</label>
+          <label class="choice"><input type="checkbox" name="equipment" value="Guantes"> Guantes</label>
+        </div>
+      </fieldset>
+      <label class="field" for="result">Resultado de inspección
+        <select id="result" name="result">
+          <option value="EPP Adecuado" selected>EPP Adecuado</option>
+          <option value="Requiere corrección">Requiere corrección</option>
+        </select>
+      </label>
+      <a class="button" id="form-link" href="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=MfwDqrehqUSxkn9U_QGXE1crhgE707RDrXIihMHUMhFUQVBHR1I4OUFMWDNUQUlITlM5VFE3VksxMC4u" target="_blank" rel="noopener noreferrer">Abrir formulario de Microsoft Forms</a>
+    </form>
 
     <h2 class="section-title">Enviar reporte por WhatsApp</h2>
-    <a class="button whatsapp" id="whatsapp-1" href="https://wa.me/50435432201" target="_blank" rel="noopener noreferrer">Enviar al 504 3543-2201</a>
-    <a class="button whatsapp" id="whatsapp-2" href="https://wa.me/504986200005" target="_blank" rel="noopener noreferrer">Enviar al 504 9862-00005</a>
-    <p class="note">El formulario se abre con la información precargada; revísala y envíala desde Microsoft Forms. WhatsApp abrirá un mensaje listo para enviar: confirma el envío en la aplicación.</p>
+    <a class="button whatsapp" data-phone="50435432201" href="https://wa.me/50435432201" target="_blank" rel="noopener noreferrer">Enviar al 504 3543-2201</a>
+    <a class="button whatsapp" data-phone="504986200005" href="https://wa.me/504986200005" target="_blank" rel="noopener noreferrer">Enviar al 504 9862-00005</a>
+    <p class="note">Al abrir Microsoft Forms, revisa las respuestas precargadas y envía el formulario allí. WhatsApp preparará el reporte; confirma el envío en la aplicación.</p>
   </main>
   <script>
-    const formUrl = document.querySelector('.button[href^="https://forms.cloud.microsoft/"]').href;
-    const report = [
-      'Reporte de inspección de uso de EPP',
-      'Fecha: 11 de noviembre de 2026',
-      'Inspector/a: Pricila Sanchez',
-      'Colaborador/a: David Espinoza',
-      'Sede: Almacen 71 A',
-      'Elementos: Chaleco, Burros',
-      'Formulario para revisar y enviar: ' + formUrl
-    ].join('\n');
+    const form = document.querySelector('#inspection-form');
+    const formLink = document.querySelector('#form-link');
+    const dateInput = document.querySelector('#inspection-date');
+    const inspectorInput = document.querySelector('#inspector');
+    const employeeInput = document.querySelector('#employee');
+    const siteInput = document.querySelector('#site');
+    const issueInput = document.querySelector('#issue');
+    const resultInput = document.querySelector('#result');
+    const formBase = 'https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=MfwDqrehqUSxkn9U_QGXE1crhgE707RDrXIihMHUMhFUQVBHR1I4OUFMWDNUQUlITlM5VFE3VksxMC4u';
 
-    document.querySelectorAll('.whatsapp').forEach((link) => {
-      link.href += '?text=' + encodeURIComponent(report);
-    });
+    function updateLinks() {
+      const equipment = [...form.querySelectorAll('input[name="equipment"]:checked')].map((input) => input.value);
+      const formUrl = new URL(formBase);
+      const answers = {
+        r27293fe88f3a4e2cb354ea07f168938a: JSON.stringify(dateInput.value),
+        r1d54e9117de64235a8f0a0099e9d43b0: inspectorInput.value,
+        ra8a89d7161fd4ab886c49806c1c168b9: employeeInput.value,
+        r6260811b238449c0bee4aa5970637f32: siteInput.value,
+        rf9e1966fe2e4471b86b8b381fcda2dde: JSON.stringify(issueInput.value),
+        re1f4d76995a14056af137330ca42da32: JSON.stringify(JSON.stringify(equipment)),
+        rde0dbff6d33e4551b5cbb3e590361f7e: resultInput.value
+      };
+      Object.entries(answers).forEach(([key, value]) => formUrl.searchParams.set(key, value));
+      formLink.href = formUrl.toString();
+
+      const readableDate = dateInput.value
+        ? new Date(dateInput.value + 'T12:00:00').toLocaleDateString('es-HN', { year: 'numeric', month: 'long', day: 'numeric' })
+        : 'Sin fecha';
+      const report = [
+        'Reporte de inspección de uso de EPP',
+        'Fecha: ' + readableDate,
+        'Inspector/a: ' + (inspectorInput.value || 'No indicado'),
+        'Colaborador/a: ' + (employeeInput.value || 'No indicado'),
+        'Sede: ' + (siteInput.value || 'No indicada'),
+        '¿Se detectó incumplimiento?: ' + issueInput.value,
+        'Elementos: ' + (equipment.length ? equipment.join(', ') : 'Ninguno seleccionado'),
+        'Resultado: ' + resultInput.value,
+        'Formulario para revisar y enviar: ' + formUrl.toString()
+      ].join('\n');
+
+      document.querySelectorAll('.whatsapp').forEach((link) => {
+        link.href = 'https://wa.me/' + link.dataset.phone + '?text=' + encodeURIComponent(report);
+      });
+    }
+
+    form.addEventListener('input', updateLinks);
+    form.addEventListener('change', updateLinks);
+    updateLinks();
   </script>
 </body>
 </html>
