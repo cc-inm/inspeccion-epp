@@ -120,7 +120,7 @@
         </div>
       </fieldset>
       <fieldset>
-        <legend>Uso de EPP</legend>
+        <legend id="equipment-legend">7. USO EPP</legend>
         <div class="choices" id="equipment-choices"></div>
       </fieldset>
       <label class="field" for="result">Resultado de inspección
@@ -141,6 +141,7 @@
     const form = document.querySelector('#inspection-form');
     const formLink = document.querySelector('#form-link');
     const equipmentChoices = document.querySelector('#equipment-choices');
+    const equipmentLegend = document.querySelector('#equipment-legend');
     const dateInput = document.querySelector('#inspection-date');
     const inspectorInput = document.querySelector('#inspector');
     const employeeInput = document.querySelector('#employee');
@@ -158,6 +159,7 @@
       const previouslyChecked = new Set(
         [...equipmentChoices.querySelectorAll('input[name="equipment"]:checked')].map((input) => input.value)
       );
+      equipmentLegend.textContent = heightWork === 'Sí' ? '6. Uso de EPP' : '7. USO EPP';
       equipmentChoices.replaceChildren();
       equipmentByHeightWork[heightWork].forEach((item) => {
         const label = document.createElement('label');
